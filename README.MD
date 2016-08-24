@@ -4,18 +4,10 @@ A Facebook Account Kit SDK wrapper for react-native (*>= 0.19.0*)
 
 ## Installation
 
-If you already didn't install `rnpm`
 ```bash
-npm install -g rnpm
+npm install --save react-native-facebook-account-kit
+react-native link react-native-facebook-account-kit
 ```
-Then install `react-native-facebook-account-kit` using `rnpm`
-```bash
-rnpm install react-native-facebook-account-kit
-```
-
-> We **strongly** recommend you to use [`rnpm`](https://github.com/rnpm/rnpm) that automatically installs the module from npm and links their native dependencies (for Android and/or iOS) with just one command:
-
-If you prefer you can do it manually following [these steps](#manual-installation)
 
 ## Configuration
 
@@ -88,31 +80,44 @@ Regarding the theming, Account Kit way to customize styles differs between platf
 For iOS you must use the field `theme` on the configure payload and set the properties you want to overwrite.
 ```javascript
 import RNAccountKit, {
-  Color
+  Color,
+  StatusBarStyle,
 } from 'react-native-facebook-account-kit'
 
 RNAccountKit.configure({
   ...,
   theme: {
-    backgroundColor: Color.rgba(0,120,0,0.1),
-    buttonBackgroundColor: Color.rgba(0, 153, 0, 1.00),
-    buttonBorderColor: Color.rgba(0,255,0,1),
-    buttonTextColor: Color.rgba(0,255,0,1),
+    // Background
+    backgroundColor: Color.rgba(0, 120, 0, 0.1),
+    backgroundImage: 'background.png',
+    // Button
+    buttonBackgroundColor: Color.rgba(0, 153, 0, 1.0),
+    buttonBorderColor: Color.rgba(0, 255, 0, 1),
+    buttonTextColor: Color.rgba(0, 255, 0, 1),
+    // Button disabled
     buttonDisabledBackgroundColor: Color.rgba(100, 153, 0, 0.5),
     buttonDisabledBorderColor: Color.rgba(100, 153, 0, 0.5),
     buttonDisabledTextColor: Color.rgba(100, 153, 0, 0.5),
-    headerBackgroundColor: Color.rgba(0, 153, 0, 1.00),
-    headerTextColor: Color.rgba(0,255,0,1),
-    iconColor: Color.rgba(0,255,0,1),
-    inputBackgroundColor: Color.rgba(0,255,0,1),
+    // Header
+    headerBackgroundColor: Color.rgba(0, 153, 0, 1.0),
+    headerButtonTextColor: Color.rgba(0, 153, 0, 0.5),
+    headerTextColor: Color.rgba(0, 255, 0, 1),
+    // Input
+    inputBackgroundColor: Color.rgba(0, 255, 0, 1),
     inputBorderColor: Color.hex('#ccc'),
     inputTextColor: Color.hex('#0f0'),
+    // Others
+    iconColor: Color.rgba(0, 255, 0, 1),
     textColor: Color.hex('#0f0'),
     titleColor: Color.hex('#0f0'),
-    backgroundImage: 'background.png',
+    // Header
+    statusBarStyle: StatusBarStyle.LightContent, // or StatusBarStyle.Default
   }
 })
 ```
+> To see the statusBarStyle reflected you must set the **UIViewControllerBasedStatusBarAppearance** property to **true** on your app's _Info.plist_ file. 
+> You can do it from XCode <img width="507" alt="screen shot 2016-08-02 at 11 44 07 am" src="https://cloud.githubusercontent.com/assets/1652196/17332979/0fa632b2-58a7-11e6-9aa3-a669ae44f2e6.png">
+
 ### Android
 For Android you need to follow this steps:
 > Check [this commit](https://github.com/underscopeio/react-native-facebook-account-kit/commit/77df35ae20f251e7c29285e8820da2ff498d9400) to see how it's done in our sample app
@@ -219,53 +224,3 @@ react-native run-ios # or react-native run-android
 ## License
 
 License is MIT
-
-
-## Manual Installation
-First, install the module from npm
-
-```
-npm install react-native-facebook-account-kit --save
-```
-
-### For iOS
-
-If you are using Cocoapods add the following line to your Podfile
-```
-pod 'RNAccountKit', :path => '../node_modules/react-native-facebook-account-kit'
-```
-
-If you are **not** using Cocoapods:  
-1. Open your project in XCode, right click on `Libraries` and click `Add Files to "Your Project Name"` Look under `node_modules/react-native-facebook-account-kit` and add `RNAccountKit.xcodeproj`.  
-2. Add `libRNAccountKit.a` to `Build Phases -> Link Binary With Libraries`.
-
-### For Android
-
-1. In `android/settings.gradle`
-   ```
-   ...
-   include ':react-native-facebook-account-kit'
-   project(':react-native-facebook-account-kit').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-facebook-account-kit/android')
-   ```
-
-2. In `android/app/build.gradle` add:
-   ```
-   dependencies {
-       ...
-       compile project(':react-native-facebook-account-kit')
-   }
-   ```
-
-3. And finally, in `android/src/main/java/com/{YOUR_APP_NAME}/MainActivity.java` add:
-   ```java
-   //...
-   import io.underscope.react.fbak.RNAccountKitPackage; // <--- This!
-   //...
-   @Override
-   protected List<ReactPackage> getPackages() {
-     return Arrays.<ReactPackage>asList(
-       new MainReactPackage(),
-       new RNAccountKitPackage() // <---- and This!
-     );
-  }
-   ```
